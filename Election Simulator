@@ -1,0 +1,66 @@
+//Student: Liana Rosado
+//10.26.2022
+//CSE121 Section AV
+//TA: Lawrence Tan
+//Election Simulator
+//Runs a simplified election simulator that uses 4 constant values to
+//create different outputs for election results
+
+import java.util.*;
+
+public class Main {
+    public static final int NUM_SIMS = 5;
+    public static final int NUM_DISTS = 10;
+    public static final double POLL_AVG = .52;
+    public static final double POLL_ERR = 0.07;
+
+    public static void main(String[] args) {
+
+                System.out.println("Welcome to the Election Simulator!");
+                System.out.println("Running " + NUM_SIMS + " simulations of " + NUM_DISTS + " districts.");
+                System.out.println("Our candidate is polling at " + (100.0 * POLL_AVG) + "% with a " + (100.0 * POLL_ERR) + "% margin of error.");
+                System.out.println();
+
+                Random r = new Random();
+                double totalPercent = 0;
+                for (int i = 1; i <= NUM_SIMS; i++) {
+                    int total = 0;
+                    int totalVotes = 0;
+
+
+                    System.out.println("Running simulation #" + i + ":");
+
+                    for (int j = 1; j <= NUM_DISTS; j++) {
+                        int numPeople = r.nextInt(1000) + 1;
+                        double error = r.nextGaussian() * 0.5 * POLL_ERR;
+                        double percent = error + POLL_AVG;
+                        int candVotes = (int) (percent * numPeople);
+                        total += candVotes;
+                        totalVotes += numPeople;
+
+                    }
+
+                    totalPercent += 100.0 * total/totalVotes;
+                    System.out.println("  Win? " + (total > totalVotes - total));
+                    System.out.print("  Results: " + total + " (" + (100.0 * total/totalVotes) + "%)");
+                    System.out.println(" - " + (totalVotes - total) + " (" + (100.0 * (totalVotes - total)/totalVotes) + "%)");
+                    System.out.print("  Visualization: ");
+                    for (int k = 0; k < total/100; k++) {
+                        System.out.print("+");
+                    }
+                    System.out.println();
+                    System.out.print("                 ");
+
+                    for (int l = 0; l < (totalVotes - total)/100; l++) {
+                        System.out.print("-");
+                    }
+                    System.out.println();
+
+                }
+                System.out.println();
+
+                double average =  totalPercent/NUM_SIMS;
+                System.out.println("Average vote percentage: " + average + "%");
+                }
+            }
+
